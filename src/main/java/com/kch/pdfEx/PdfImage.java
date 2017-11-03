@@ -4,9 +4,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
@@ -26,10 +28,16 @@ import org.apache.pdfbox.text.PDFTextStripper;
 public class PdfImage implements Runnable {
 
 	public static void main(String[] args) {
-		PdfImage myrun = new PdfImage();
+		/*PdfImage myrun = new PdfImage();
 		
 		Thread t = new Thread(myrun); // 생성한 myrun 객체를 인수로 쓰레드 생성
-		t.start();
+		t.start();*/
+		try {
+			TextExtractor.getInstance().text();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -41,7 +49,7 @@ public class PdfImage implements Runnable {
 			String sourceDir = "D:/temp/"; // Pdf files are read from this folder
 			String destinationDir = "D:/temp/Converted_PdfFiles_to_Image/"; // converted images from pdf document are
 																			// saved here
-			String oldFileName = "PDFBOX147-corporate_guide.pdf";
+			String oldFileName = "gameOfThrone.pdf";
 			Long startTime = System.currentTimeMillis();
 			System.out.println(startTime);
 
@@ -107,14 +115,15 @@ public class PdfImage implements Runnable {
 					reader.setEndPage(pageNumber);
 					String pageText = reader.getText(document);
 					new File(destinationDir + oldFileName + "/" + pageNumber).mkdir();
-					FileOutputStream fos = new FileOutputStream(
-							new File(destinationDir + oldFileName + "/" + pageNumber + "/"+fileName + ".txt"));
-
-					BufferedOutputStream bos = new BufferedOutputStream(fos);
-					bos.write(pageText.getBytes());
+					/*FileOutputStream fos = new FileOutputStream(
+							new File(destinationDir + oldFileName + "/" + pageNumber + "/"+fileName + ".txt"));*/
+//					BufferedOutputStream bos = new BufferedOutputStream(fw);
+					FileWriter fw = new FileWriter(new File(destinationDir + oldFileName + "/" + pageNumber + "/"+fileName + ".txt"));
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write(pageText);
 					System.out.println("TextCreated" + destinationDir + pageNumber + "/" + fileName + ".txt");
-					bos.close();
-					fos.close();
+					bw.close();
+					fw.close();
 					
 					
 					PDResources pdResources = page.getResources();
@@ -190,7 +199,7 @@ public class PdfImage implements Runnable {
 				}
 				document.close();
 				
-				System.out.println("걸린시간 : " + (System.currentTimeMillis() - startTime));
+				System.out.println("걸린시간 : " + ((System.currentTimeMillis() - startTime)/1000)+"초");
 				System.out.println("Converted Images are saved at -> " + destinationFile.getAbsolutePath());
 			} else {
 				System.err.println(sourceFile.getName() + " File not exists");
