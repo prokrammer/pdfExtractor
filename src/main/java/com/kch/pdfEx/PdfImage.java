@@ -46,6 +46,11 @@ public class PdfImage implements Runnable {
 		// TODO Auto-generated method stub
 		
 		try {
+			
+			
+			
+			
+			
 			String sourceDir = "D:/temp/"; // Pdf files are read from this folder
 			String destinationDir = "D:/temp/Converted_PdfFiles_to_Image/"; // converted images from pdf document are
 																			// saved here
