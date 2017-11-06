@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.UUID;import org.omg.CosNaming._BindingIteratorStub;
 import org.springframework.util.StringUtils;
 
 public class TextExtractor {
@@ -22,57 +21,39 @@ public class TextExtractor {
 		try {
 			text();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public static void text() throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader("D:/temp/gggg.txt"));
-		int numOfOneLine = 3;
-		int lineOfOnePage = 3;
-		String line = br.readLine();
+		BufferedReader br = new BufferedReader(new FileReader("D:/temp/gggg.txt")); //Read .txt file
+		int numOfOneLine = 3;	// Number of one line
+		int lineOfOnePage = 3;	// Number of lines of One page
+		int page = 1;	// For count pages
+		int numOfEnter;	// For search the number of Enter
 		StringBuilder sb = new StringBuilder();
-		int page = 1;
-		int numOfEnter;
-		while (line != null) {
-			
-			if (line.length() < numOfOneLine) {
+		String line = br.readLine(); // Read one line
+		while (line != null) { // While line is exist
+			if (line.length() < numOfOneLine) { 
 				sb.append(line + "\r\n");
-				line = br.readLine();
+				line = br.readLine();	// Read next line when current line is lesser than numOfOneLine 
 			} else {
 				sb.append(line.substring(0, numOfOneLine) + "\r\n");
-				line = line.substring(numOfOneLine);
+				line = line.substring(numOfOneLine); // Cut line and reunite
 				
 			}
-			
 			numOfEnter = StringUtils.countOccurrencesOf(sb.toString(), "\r\n");
 			if(numOfEnter >= lineOfOnePage) {
-				page = write(page,sb);
-				/*BufferedWriter bw = new BufferedWriter(new FileWriter(new File("d:/temp/gggg" + page + ".txt")));
-				String line1 = sb.toString().substring(0, sb.toString().lastIndexOf("\r\n"));
-				bw.write(line1);
-				bw.flush();
-				bw.close();
-				System.out.println("while¾È sb : " + line1);
-				sb = new StringBuilder();
-				page++;*/
+				page = write(page,sb); // Write and return the number of page for increase
 			}
 					
-		}
-		page = write(page,sb);
-		/*BufferedWriter bw = new BufferedWriter(new FileWriter(new File("d:/temp/gggg" + page + ".txt")));
-		String line1 = sb.toString().substring(0, sb.toString().lastIndexOf("\r\n"));
-		bw.write(line1);
-		bw.flush();
-		bw.close();
-		System.out.println("while¾È sb : " + sb.toString());
-		sb = new StringBuilder();
-		page++;*/
-		
+		} // Exit when line is not exist
+		write(page,sb); // Write the left text 
 		br.close();
 	}
 	public static int write(int page, StringBuilder sb) throws Exception{
+		if(sb.toString().equals("\r\n")) {System.out.println("\\r\\n");return page;}
+		if(sb.toString().equals("")) {System.out.println("space");return page;}
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("d:/temp/gggg" + page + ".txt")));
 		String withoutLastEnter = sb.toString().substring(0, sb.toString().lastIndexOf("\r\n"));
 		bw.write(withoutLastEnter);
