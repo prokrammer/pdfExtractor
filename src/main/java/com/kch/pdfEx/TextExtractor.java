@@ -27,14 +27,14 @@ public class TextExtractor {
 	
 	public static void text() throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader("D:/temp/gggg.txt")); //Read .txt file
-		int numOfOneLine = 3;	// Number of one line
-		int lineOfOnePage = 3;	// Number of lines of One page
+		int numOfOneLine = 20;	// Number of one line
+		int lineOfOnePage = 20;	// Number of lines of One page
 		int page = 1;	// For count pages
 		int numOfEnter;	// For search the number of Enter
 		StringBuilder sb = new StringBuilder();
 		String line = br.readLine(); // Read one line
 		while (line != null) { // While line is exist
-			if (line.length() < numOfOneLine) { 
+			if (line.length() <= numOfOneLine) { 
 				sb.append(line + "\r\n");
 				line = br.readLine();	// Read next line when current line is lesser than numOfOneLine 
 			} else {
@@ -59,7 +59,7 @@ public class TextExtractor {
 		bw.write(withoutLastEnter);
 		bw.flush();
 		bw.close();
-		System.out.println("while¾È sb : " + withoutLastEnter);
+		System.out.println("sb : " + withoutLastEnter);
 		sb.setLength(0);
 		page++;
 		return page;
